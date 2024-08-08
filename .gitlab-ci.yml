@@ -1,0 +1,31 @@
+stages:
+  - validate
+  - plan
+  - apply
+
+variables:
+  TF_ROOT: "."
+  TF_PLAN: "$CI_PROJECT_DIR/tfplan"
+
+before_script:
+  - terraform --version
+  - terraform init $TF_ROOT
+
+validate:
+  stage: validate
+  script:
+    - terraform validate $TF_ROOT
+
+plan:
+  stage: plan
+  script:
+    - terraform plan -out=$TF_PLAN $TF_ROOT
+  artifacts:
+    paths:
+      - $TF_PLAN
+
+apply:
+  stage: apply
+  script:
+    - terraform apply -auto-approve $TF_PLAN
+  when: manual

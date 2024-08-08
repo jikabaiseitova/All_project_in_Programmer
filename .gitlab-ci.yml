@@ -12,18 +12,19 @@ before_script:
   - curl -sSL https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip -o terraform.zip
   - unzip terraform.zip -d /usr/local/bin
   - terraform --version
-  - terraform init -chdir=$TF_ROOT
 
 validate:
   stage: validate
   image: google/cloud-sdk:latest
   script:
+    - terraform init -chdir=$TF_ROOT
     - terraform validate -chdir=$TF_ROOT
 
 plan:
   stage: plan
   image: google/cloud-sdk:latest
   script:
+    - terraform init -chdir=$TF_ROOT
     - terraform plan -out=$TF_PLAN -chdir=$TF_ROOT
   artifacts:
     paths:
@@ -33,6 +34,6 @@ apply:
   stage: apply
   image: google/cloud-sdk:latest
   script:
-    -
-
-
+    - terraform init -chdir=$TF_ROOT
+    - terraform apply -auto-approve $TF_PLAN
+  when: manual

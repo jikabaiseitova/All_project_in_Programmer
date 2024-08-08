@@ -1,39 +1,13 @@
 stages:
+  - build
+  - deploy
   - validate
   - plan
   - apply
+  - destroy
 
-variables:
-  TF_ROOT: "."
-  TF_PLAN: "$CI_PROJECT_DIR/tfplan"
 
-before_script:
-  - apt-get update && apt-get install -y unzip
-  - curl -sSL https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip -o terraform.zip
-  - unzip terraform.zip -d /usr/local/bin
-  - terraform --version
 
-validate:
-  stage: validate
-  image: google/cloud-sdk:latest
-  script:
-    - terraform init -chdir=$TF_ROOT
-    - terraform validate -chdir=$TF_ROOT
-
-plan:
-  stage: plan
-  image: google/cloud-sdk:latest
-  script:
-    - terraform init -chdir=$TF_ROOT
-    - terraform plan -out=$TF_PLAN -chdir=$TF_ROOT
-  artifacts:
-    paths:
-      - $TF_PLAN
-
-apply:
-  stage: apply
-  image: google/cloud-sdk:latest
-  script:
-    - terraform init -chdir=$TF_ROOT
-    - terraform apply -auto-approve $TF_PLAN
-  when: manual
+include:
+  - local: 'yaml/vpc.yaml'
+  - local: 'yaml/docker.yaml'

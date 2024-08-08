@@ -1,0 +1,49 @@
+stages:
+  - validate
+  - plan
+  - apply
+  - destroy
+
+variables:
+  TF_VERSION: "1.9.3"
+  GCP_PROJECT_ID: "your-gcp-project-id"
+  GCP_REGION: "us-central1"  
+
+before_script:
+  - apt-get update && apt-get install -y unzip curl
+  - curl -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
+  - unzip /tmp/terraform.zip -d /usr/local/bin/
+  - terraform --version
+
+validate:
+  stage: validate
+  script:
+    - terraform init -backend-config="bucket=my-terraform-state-bucket" -backend-config="prefix=terraform/state"
+    - terraform validate
+
+plan:
+  stage: plan
+  needs: ["validate"]
+  script:
+    - terraform init -backend-config="bucket=my-terraform-state-bucket" -backend-config="prefix=terraform/state"
+    - terraform plan -out=tfplan
+  artifacts:
+    paths:
+      - tfplan
+
+apply:
+  stage: apply
+  needs: ["plan"]
+  dependencies:
+    - plan
+  script:
+    - terraform init -backend-config="bucket=my-terraform-state-bucket" -backend-config="prefix=terraform/state"
+    - terraform apply -auto-approve tfplan
+
+destroy:
+  stage: destroy
+  needs: ["apply"]
+  script:
+    - terraform init -backend-config="bucket=my-terraform-state-bucket" -backend-config="prefix=terraform/state"
+    - terraform destroy -auto-approve
+  timeout: 10 minutes

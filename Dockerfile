@@ -1,13 +1,12 @@
-FROM ruby:3.1
+FROM node:14
 
-# Установка Terraform
-ARG TERRAFORM_VERSION=1.0.0
-RUN apt-get update && apt-get install -y wget unzip && \
-    wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-    unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-    mv terraform /usr/local/bin/ && \
-    rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-    apt-get clean
+WORKDIR /usr/src/app
 
-# Проверка установки Terraform
-RUN terraform --version
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 8080
+CMD ["node", "app.js"]

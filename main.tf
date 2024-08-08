@@ -1,3 +1,13 @@
+terraform {
+  terraform {
+  backend "gcs" {
+    bucket  = "for-terraform"
+    prefix  = "terraform/state"
+  }
+}
+
+}
+
 provider "google" {
   credentials = file("/Users/jikab/Desktop/CICD/gitlab-cicd-431608-b129d9fbffc9.json")  # Путь к файлу с ключом сервисного аккаунта
   project     = "gitlab-cicd-431608"                           # ID проекта в GCP

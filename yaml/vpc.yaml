@@ -6,26 +6,37 @@ stages:
 
 variables:
   TF_VERSION: "1.9.3"
-  GCP_PROJECT_ID: "your-gcp-project-id"
-  GCP_REGION: "us-central1"  
+  GCP_PROJECT_ID: "gitlab-cicd-431608"
+  GCP_REGION: "us-central1"
+  TF_STATE_NAME: "default"
+  GITLAB_ACCESS_TOKEN: "<YOUR-ACCESS-TOKEN>"
 
 before_script:
   - apt-get update && apt-get install -y unzip curl
   - curl -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
   - unzip /tmp/terraform.zip -d /usr/local/bin/
   - terraform --version
+  - terraform init \
+      -backend-config="address=https://gitlab.com/api/v4/projects/60681404/terraform/state/${TF_STATE_NAME}" \
+      -backend-config="lock_address=https://gitlab.com/api/v4/projects/60681404/terraform/state/${TF_STATE_NAME}/lock" \
+      -backend-config="unlock_address=https://gitlab.com/api/v4/projects/60681404/terraform/state/${TF_STATE_NAME}/lock" \
+      -backend-config="username=baiseitovazhyldyz4" \
+      -backend-config="password=$GITLAB_ACCESS_TOKEN" \
+      -backend-config="lock_method=POST" \
+      -backend-config="unlock_method=DELETE" \
+      -backend-config="retry_wait_min=5"
+  - terraform init \
+      -backend-config="address"
 
 validate:
   stage: validate
   script:
-    - terraform init -backend-config="bucket=my-terraform-state-bucket" -backend-config="prefix=terraform/state"
     - terraform validate
 
 plan:
   stage: plan
   needs: ["validate"]
   script:
-    - terraform init -backend-config="bucket=my-terraform-state-bucket" -backend-config="prefix=terraform/state"
     - terraform plan -out=tfplan
   artifacts:
     paths:
@@ -37,13 +48,11 @@ apply:
   dependencies:
     - plan
   script:
-    - terraform init -backend-config="bucket=my-terraform-state-bucket" -backend-config="prefix=terraform/state"
     - terraform apply -auto-approve tfplan
 
 destroy:
   stage: destroy
   needs: ["apply"]
   script:
-    - terraform init -backend-config="bucket=my-terraform-state-bucket" -backend-config="prefix=terraform/state"
     - terraform destroy -auto-approve
   timeout: 10 minutes

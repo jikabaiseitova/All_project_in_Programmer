@@ -1,13 +1,11 @@
 stages:
-  # - build
-  # - deploy
   - validate
   - plan
   - apply
   - destroy
-
-
+  - build
+  - deploy
 
 include:
   - local: 'yaml/vpc.yaml'
-  # - local: 'yaml/docker.yaml'
+  - local: 'yaml/docker.yaml'

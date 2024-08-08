@@ -1,11 +1,8 @@
 terraform {
-  terraform {
   backend "gcs" {
     bucket  = "for-terraform"
     prefix  = "terraform/state"
   }
-}
-
 }
 
 provider "google" {

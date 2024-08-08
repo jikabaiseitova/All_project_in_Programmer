@@ -1,9 +1,3 @@
-terraform {
-  backend "local" {
-    path = "terraform.tfstate"  # Путь к локальному файлу состояния
-  }
-}
-
 provider "google" {
   credentials = file("/Users/jikab/Desktop/CICD/gitlab-cicd-431608-b129d9fbffc9.json")  # Путь к файлу с ключом сервисного аккаунта
   project     = "gitlab-cicd-431608"                           # ID проекта в GCP
@@ -21,4 +15,3 @@ resource "google_compute_subnetwork" "default" {
   network        = google_compute_network.default.id
   region         = "us-central1"
 }
-

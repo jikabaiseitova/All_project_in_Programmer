@@ -1,8 +1,8 @@
 module "vpc" {
-  source          = "./modules/vpc"
-  region          = var.region
-  subnet_cidrs    = var.subnet_cidrs
-  project_id      = var.project_id
+  source       = "./modules/vpc"
+  region       = var.region
+  subnet_cidrs = var.subnet_cidrs
+  project_id   = var.project_id
 }
 
 output "vpc_id" {
@@ -12,4 +12,3 @@ output "vpc_id" {
 output "subnet_ids" {
   value = module.vpc.subnet_ids
 }
-

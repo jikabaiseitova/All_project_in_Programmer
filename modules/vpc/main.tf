@@ -17,11 +17,3 @@ resource "google_compute_subnetwork" "subnet" {
   region        = var.region
   project       = var.project_id
 }
-
-output "vpc_id" {
-  value = google_compute_network.vpc.id
-}
-
-output "subnet_ids" {
-  value = google_compute_subnetwork.subnet.*.id
-}

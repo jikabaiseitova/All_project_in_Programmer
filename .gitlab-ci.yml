@@ -8,18 +8,21 @@ variables:
   TF_PLAN: "$CI_PROJECT_DIR/tfplan"
 
 before_script:
+  - apt-get update && apt-get install -y unzip
+  - curl -sSL https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip -o terraform.zip
+  - unzip terraform.zip -d /usr/local/bin
   - terraform --version
   - terraform init $TF_ROOT
 
 validate:
   stage: validate
-  image: hashicorp/terraform:1.0.0
+  image: google/cloud-sdk:latest
   script:
     - terraform validate $TF_ROOT
 
 plan:
   stage: plan
-  image: hashicorp/terraform:1.0.0
+  image: google/cloud-sdk:latest
   script:
     - terraform plan -out=$TF_PLAN $TF_ROOT
   artifacts:
@@ -28,7 +31,7 @@ plan:
 
 apply:
   stage: apply
-  image: hashicorp/terraform:1.0.0
+  image: google/cloud-sdk:latest
   script:
     - terraform apply -auto-approve $TF_PLAN
   when: manual

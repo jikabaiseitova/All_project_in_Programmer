@@ -1,7 +1,6 @@
 terraform {
-  backend "gcs" {
-    bucket  = "my-terraform-state-bucket"  # Имя GCS bucket
-    prefix  = "terraform/state"            # Путь внутри bucket, где будет храниться состояние
+  backend "local" {
+    path = "terraform.tfstate"  # Путь к локальному файлу состояния
   }
 }
 
@@ -22,3 +21,4 @@ resource "google_compute_subnetwork" "default" {
   network        = google_compute_network.default.id
   region         = "us-central1"
 }
+

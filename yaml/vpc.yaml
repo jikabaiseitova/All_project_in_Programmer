@@ -16,17 +16,17 @@ before_script:
   - curl -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
   - unzip /tmp/terraform.zip -d /usr/local/bin/
   - terraform --version
-  - terraform init \
-      -backend-config="address=https://gitlab.com/api/v4/projects/60681404/terraform/state/${TF_STATE_NAME}" \
-      -backend-config="lock_address=https://gitlab.com/api/v4/projects/60681404/terraform/state/${TF_STATE_NAME}/lock" \
-      -backend-config="unlock_address=https://gitlab.com/api/v4/projects/60681404/terraform/state/${TF_STATE_NAME}/lock" \
-      -backend-config="username=baiseitovazhyldyz4" \
-      -backend-config="password=$GITLAB_ACCESS_TOKEN" \
-      -backend-config="lock_method=POST" \
-      -backend-config="unlock_method=DELETE" \
-      -backend-config="retry_wait_min=5"
-  - terraform init \
-      -backend-config="address"
+  - GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_CREDENTIALS
+  # - terraform init \
+  #     -backend-config="address=https://gitlab.com/api/v4/projects/60681404/terraform/state/${TF_STATE_NAME}" \
+  #     -backend-config="lock_address=https://gitlab.com/api/v4/projects/60681404/terraform/state/${TF_STATE_NAME}/lock" \
+  #     -backend-config="unlock_address=https://gitlab.com/api/v4/projects/60681404/terraform/state/${TF_STATE_NAME}/lock" \
+  #     -backend-config="username=baiseitovazhyldyz4" \
+  #     -backend-config="password=$GITLAB_ACCESS_TOKEN" \
+  #     -backend-config="lock_method=POST" \
+  #     -backend-config="unlock_method=DELETE" \
+  #     -backend-config="retry_wait_min=5"
+  - terraform init
 
 validate:
   stage: validate

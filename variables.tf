@@ -13,5 +13,6 @@ variable "subnet_cidrs" {
 variable "project_id" {
   description = "Google Cloud project ID"
   type        = string
+  default     = "gitlab-cicd-431608"
 }
 

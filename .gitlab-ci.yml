@@ -13,11 +13,13 @@ before_script:
 
 validate:
   stage: validate
+  image: hashicorp/terraform:1.0.0
   script:
     - terraform validate $TF_ROOT
 
 plan:
   stage: plan
+  image: hashicorp/terraform:1.0.0
   script:
     - terraform plan -out=$TF_PLAN $TF_ROOT
   artifacts:
@@ -26,6 +28,8 @@ plan:
 
 apply:
   stage: apply
+  image: hashicorp/terraform:1.0.0
   script:
     - terraform apply -auto-approve $TF_PLAN
   when: manual
+

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/gitlab-cicd-431608/my-nodejs-app-backend:latest
+        image: gcr.io/gitlab-cicd-431608/backend-app:latest
         ports:
         - containerPort: 3000
         env:

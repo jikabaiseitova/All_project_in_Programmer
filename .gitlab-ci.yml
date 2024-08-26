@@ -1,0 +1,9 @@
+stages:
+  - validate
+  - plan
+  - apply
+  - destroy
+
+
+include:
+  - local: 'yaml/vpc.yaml'

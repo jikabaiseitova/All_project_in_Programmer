@@ -8,12 +8,13 @@ module "vpc" {
   project_id   = var.project_id
   network_name = var.network_name
   subnet_names = var.subnet_names
+  region       = var.region         
 }
 
 resource "google_project_iam_member" "container_sa_user" {
   project = var.project_id
   role    = "roles/iam.serviceAccountUser"
-  member  = "user:<ваш_email_в_формате@example.com>"  # Замените на ваш email
+  member  = "user:<baiseitovazhyldyz4@gmail.com>" 
 }
 
 resource "google_container_cluster" "primary" {

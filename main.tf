@@ -6,10 +6,10 @@ provider "google" {
 
 # Вызов модуля для создания VPC и подсетей
 module "vpc" {
-  source    = "./modules/vpc"
-  vpc_name  = "my-vpc-network"
-  project_id = var.project_id
-  region    = var.region
+  source      = "./modules/vpc"
+  vpc_name    = "my-vpc-network"
+  project_id  = var.project_id
+  region      = var.region
   subnet_cidrs = var.subnet_cidrs
 }
 
@@ -17,7 +17,7 @@ module "vpc" {
 resource "google_container_cluster" "primary" {
   name     = "gke-cluster"
   location = var.region
-  network  = module.vpc.vpc.id
+  network  = module.vpc.vpc_id    # Используем экспортированный vpc_id
 
   node_config {
     machine_type = "e2-medium"
@@ -27,13 +27,14 @@ resource "google_container_cluster" "primary" {
   }
 
   initial_node_count = 1
-  subnetwork = module.vpc.subnet[0].id
+  subnetwork         = module.vpc.subnet_ids[0]   # Используем экспортированный список subnet_ids
 }
 
 # Конфигурация бекенда для хранения состояния Terraform в Google Cloud Storage
 terraform {
   backend "gcs" {
-    bucket  = "for-terraform"
-    prefix  = "terraform/state"
+    bucket = "for-terraform"
+    prefix = "terraform/state"
   }
 }
+

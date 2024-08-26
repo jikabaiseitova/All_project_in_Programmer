@@ -9,7 +9,6 @@ variables:
   GCP_PROJECT_ID: "gitlab-cicd-431608"
   GCP_REGION: "us-central1"
   TF_STATE_NAME: "default"
-  GITLAB_ACCESS_TOKEN: "<YOUR-ACCESS-TOKEN>"
 
 before_script:
   - apt-get update && apt-get install -y unzip curl
@@ -47,3 +46,4 @@ destroy:
   script:
     - terraform destroy -auto-approve
   timeout: 10 minutes
+

@@ -15,3 +15,4 @@ variable "project_id" {
   type        = string
   default     = "gitlab-cicd-431608"
 }
+

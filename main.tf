@@ -1,40 +1,44 @@
-# Определение провайдера Google Cloud
 provider "google" {
   project = var.project_id
   region  = var.region
 }
 
-# Вызов модуля для создания VPC и подсетей
 module "vpc" {
-  source      = "./modules/vpc"
-  vpc_name    = "my-vpc-network"
-  project_id  = var.project_id
-  region      = var.region
-  subnet_cidrs = var.subnet_cidrs
+  source       = "./modules/vpc"
+  project_id   = var.project_id
+  network_name = var.network_name
+  subnet_names = var.subnet_names
 }
 
-# Создание GKE-кластера
+resource "google_project_iam_member" "container_sa_user" {
+  project = var.project_id
+  role    = "roles/iam.serviceAccountUser"
+  member  = "user:<ваш_email_в_формате@example.com>"  # Замените на ваш email
+}
+
 resource "google_container_cluster" "primary" {
-  name     = "gke-cluster"
+  name     = var.cluster_name
   location = var.region
-  network  = module.vpc.vpc_id    # Используем экспортированный vpc_id
+
+  network    = module.vpc.network_id
+  subnetwork = module.vpc.subnets[0]
+
+  initial_node_count = var.node_count
+
+  master_auth {
+    username = ""
+    password = ""
+    client_certificate_config {
+      issue_client_certificate = false
+    }
+  }
 
   node_config {
-    machine_type = "e2-medium"
+    machine_type = var.machine_type
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
     ]
   }
-
-  initial_node_count = 1
-  subnetwork         = module.vpc.subnet_ids[0]   # Используем экспортированный список subnet_ids
 }
 
-# Конфигурация бекенда для хранения состояния Terraform в Google Cloud Storage
-terraform {
-  backend "gcs" {
-    bucket = "for-terraform"
-    prefix = "terraform/state"
-  }
-}
 

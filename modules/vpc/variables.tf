@@ -1,23 +1,20 @@
-variable "vpc_name" {
-  description = "Название VPC-сети"
+variable "project_id" {
+  description = "The ID of the project where the VPC will be created."
   type        = string
-  default     = "my-vpc-network"
 }
 
-variable "subnet_cidrs" {
-  description = "Список CIDR-блоков для подсетей"
+variable "network_name" {
+  description = "The name of the VPC network."
+  type        = string
+}
+
+variable "subnet_names" {
+  description = "The names of the subnets."
   type        = list(string)
-  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "region" {
-  description = "Регион Google Cloud"
+  description = "The region in which to create the VPC and subnets."
   type        = string
-  default     = "us-central1"
 }
 
-variable "project_id" {
-  description = "ID проекта Google Cloud"
-  type        = string
-  default     = "gitlab-cicd-431608"
-}

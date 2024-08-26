@@ -1,18 +1,36 @@
-variable "region" {
-  description = "Регион Google Cloud"
-  type        = string
-  default     = "us-central1"
-}
-
-variable "subnet_cidrs" {
-  description = "Список CIDR-блоков для подсетей"
-  type        = list(string)
-  default     = ["10.0.1.0/24", "10.0.2.0/24"]
-}
-
 variable "project_id" {
-  description = "ID проекта Google Cloud"
+  description = "The ID of the project in which to create the resources."
   type        = string
-  default     = "gitlab-cicd-431608"
 }
+
+variable "region" {
+  description = "The region in which to create the cluster and resources."
+  type        = string
+}
+
+variable "network_name" {
+  description = "The name of the VPC network."
+  type        = string
+}
+
+variable "subnet_names" {
+  description = "The names of the subnets."
+  type        = list(string)
+}
+
+variable "cluster_name" {
+  description = "The name of the Kubernetes cluster."
+  type        = string
+}
+
+variable "node_count" {
+  description = "The number of nodes in the cluster."
+  type        = number
+}
+
+variable "machine_type" {
+  description = "The machine type to use for the nodes."
+  type        = string
+}
+
 

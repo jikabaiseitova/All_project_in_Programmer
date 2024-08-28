@@ -1,8 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Kubernetes Awesome
 =======
 # Final Project
 >>>>>>> 662f3aea36a12b48e5af43261895e99e76bc09a7
+=======
+# Full Project
+>>>>>>> origin/main
 
 
 
@@ -20,10 +24,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 ```
 cd existing_repo
 <<<<<<< HEAD
+<<<<<<< HEAD
 git remote add origin https://gitlab.com/cicd5670132/kubernetes_awesome.git
 =======
 git remote add origin https://gitlab.com/cicd5670132/final-project.git
 >>>>>>> 662f3aea36a12b48e5af43261895e99e76bc09a7
+=======
+git remote add origin https://gitlab.com/cicd5670132/full_project.git
+>>>>>>> origin/main
 git branch -M main
 git push -uf origin main
 ```
@@ -31,10 +39,14 @@ git push -uf origin main
 ## Integrate with your tools
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 - [ ] [Set up project integrations](https://gitlab.com/cicd5670132/kubernetes_awesome/-/settings/integrations)
 =======
 - [ ] [Set up project integrations](https://gitlab.com/cicd5670132/final-project/-/settings/integrations)
 >>>>>>> 662f3aea36a12b48e5af43261895e99e76bc09a7
+=======
+- [ ] [Set up project integrations](https://gitlab.com/cicd5670132/full_project/-/settings/integrations)
+>>>>>>> origin/main
 
 ## Collaborate with your team
 

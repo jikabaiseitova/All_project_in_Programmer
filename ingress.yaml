@@ -12,7 +12,7 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - awesome.zhyldyz.site
+        - zhyldyz.site
       secretName: tls-secret 
   rules:
     - host: zhyldyz.site

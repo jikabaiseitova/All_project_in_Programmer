@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gcr.io/gitlab-cicd-431608/frontend-app:latest
+        image: gcr.io/reference-node-434715-i6/frontend-app:latest
         ports:
         - containerPort: 80

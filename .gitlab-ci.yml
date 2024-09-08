@@ -1,0 +1,11 @@
+stages:
+  - build
+  - deploy
+  - validate
+  - plan
+  - apply
+
+
+include:
+  - local: 'yaml/docker.yaml'
+  - local: 'yaml/vpc.yaml'

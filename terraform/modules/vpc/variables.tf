@@ -13,4 +13,5 @@ variable "subnet_cidrs" {
 variable "project_id" {
   description = "Google Cloud project ID"
   type        = string
+  default     = "reference-node-434715-i6"
 }

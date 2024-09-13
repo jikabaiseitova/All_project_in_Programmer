@@ -1,35 +1,36 @@
-stages:
-  - validate
-  - plan
-  - apply
-
 variables:
   TF_VERSION: "1.9.3"
   GCP_PROJECT_ID: "reference-node-434715-i6"
   GCP_REGION: "us-central1"
   TF_STATE_NAME: "default"
+  BUCKET: "for_terraform"
+  PREFIX: "terraform/state"
 
 before_script:
   - apt-get update && apt-get install -y unzip curl
   - curl -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
   - unzip /tmp/terraform.zip -d /usr/local/bin/
   - terraform --version
-  - GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_CREDENTIALS
-  - terraform init
+  - echo "$GOOGLE_CREDENTIALS" > /tmp/gcloud-key.json
+  - export GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcloud-key.json
 
 validate:
   stage: validate
   script:
+    - cd terraform
+    - terraform init -backend-config="bucket=${BUCKET}" -backend-config="prefix=${PREFIX}"
     - terraform validate
 
 plan:
   stage: plan
   needs: ["validate"]
   script:
-    - terraform plan -out=tfplan
+    - cd terraform
+    - terraform init -backend-config="bucket=${BUCKET}" -backend-config="prefix=${PREFIX}"
+    - terraform plan -out=tfplan -var="project_id=${GCP_PROJECT_ID}"
   artifacts:
     paths:
-      - tfplan
+      - terraform/tfplan
 
 apply:
   stage: apply
@@ -37,4 +38,6 @@ apply:
   dependencies:
     - plan
   script:
-    - terraform apply -auto-approve tfplan
+    - cd terraform
+    - terraform init -backend-config="bucket=${BUCKET}" -backend-config="prefix=${PREFIX}"
+    - terraform apply -auto-approve
